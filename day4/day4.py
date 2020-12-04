@@ -8,7 +8,7 @@ required_fields = [
     ('hgt', lambda h: match(r'\d+(in|cm)', h, IGNORECASE) and (between(h[:-2], 150, 193) if h[-2:] == 'cm' else between(h[:-2], 59, 76))), 
     ('hcl', lambda c: match(r'#[0-9a-f]{6}', c, IGNORECASE)), 
     ('ecl', lambda c: c.lower() in ('amb', 'blu', 'brn', 'gry', 'grn', 'hzl', 'oth')),
-    ('pid', lambda i: match(r'\d{9}', i))
+    ('pid', lambda i: match(r'^\d{9}$', i))
     ]
 
 def between(s, lo, hi):
