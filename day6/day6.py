@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+from functools import reduce
+
 def read_groups(infile):
     groups, g = [], []
     for l in map(str.rstrip, open(infile).readlines()):
@@ -14,10 +16,7 @@ def read_groups(infile):
 def solve_part_1(groups):
     any_answers = []
     for g in groups:
-        g_answers = set(c for c in g[0])
-        for a in g[1:]:
-            g_answers |= set(c for c in a)
-        any_answers.append(g_answers)
+        any_answers.append(reduce(set.union, [set(c for c in a) for a in g]))
 
     return sum([len(a) for a in any_answers])
     
@@ -25,10 +24,7 @@ def solve_part_1(groups):
 def solve_part_2(groups):
     all_answers = []
     for g in groups:
-        g_answers = set(c for c in g[0])
-        for a in g[1:]:
-            g_answers &= set(c for c in a)
-        all_answers.append(g_answers)
+        all_answers.append(reduce(set.intersection, [set(c for c in a) for a in g]))
         
     return sum([len(a) for a in all_answers])
 
