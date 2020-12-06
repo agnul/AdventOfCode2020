@@ -2,21 +2,19 @@
 from functools import reduce
 
 def read_groups(infile):
-    groups, g = [], []
+    groups = [[]]
     for l in map(str.rstrip, open(infile).readlines()):
         if len(l) == 0:
-            groups.append(g)
-            g = []
+            groups.append([])
         else:
-            g.append(l)
-    groups.append(g)
+            groups[-1].append(l)
     return groups
 
 
 def solve_part_1(groups):
     any_answers = []
     for g in groups:
-        any_answers.append(reduce(set.union, [set(c for c in a) for a in g]))
+        any_answers.append(reduce(set.union, [set(a) for a in g]))
 
     return sum([len(a) for a in any_answers])
     
@@ -24,7 +22,7 @@ def solve_part_1(groups):
 def solve_part_2(groups):
     all_answers = []
     for g in groups:
-        all_answers.append(reduce(set.intersection, [set(c for c in a) for a in g]))
+        all_answers.append(reduce(set.intersection, [set(a) for a in g]))
         
     return sum([len(a) for a in all_answers])
 
