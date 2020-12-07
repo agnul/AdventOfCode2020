@@ -16,18 +16,14 @@ def parse_rules(lines):
 
 
 def can_contain(bag, color, rules):
-    contents = rules[bag]
-    for _, c in contents:
-        if c == color or can_contain(c, color, rules):
-            return True
+    bag_contents = [c for _, c in rules[bag]]
+    if color in bag_contents or any(can_contain(c, color, rules) for c in bag_contents):
+        return True
     return False
 
 
-def count_bags_inside(color, rules):
-    count, contents = 1, rules[color]
-    for q, c in contents:
-        count += q * count_bags_inside(c, rules)
-    return count
+def count_bags_inside(color, bags):
+    return 1 + sum(q * count_bags_inside(b, bags) for q, b in bags[color])
 
 
 def solve_part_1b(rules):
