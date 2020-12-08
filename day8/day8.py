@@ -15,8 +15,8 @@ def run(program):
 
 
 def patch(program, addr):
-    p = program.copy()
-    p[addr] = 'jmp' + p[addr][3:] if p[addr][:3] == 'nop' else 'nop' + p[addr][3:]
+    p, op, args = program.copy(), *program[addr].split()
+    p[addr] = f'jmp {args}' if op == 'nop' else f'nop {args}'
     return p
 
 
