@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from collections import Counter
 
-def paths_from(i, jolts, cache = dict()):
+def chains_from(i, jolts, cache = dict()):
     if i == len(jolts) - 1: return 1
 
     if i in cache: return cache[i]
@@ -9,7 +9,7 @@ def paths_from(i, jolts, cache = dict()):
     p = 0
     for j in range(i + 1, min(i + 4, len(jolts))):
         if jolts[j] - jolts[i] <= 3:
-            p += paths_from(j, jolts, cache)
+            p += chains_from(j, jolts, cache)
     cache[i] = p
     return p
 
@@ -21,7 +21,7 @@ def solve_part_1(jolts):
 
 
 def solve_part_2(jolts):
-    return paths_from(0, [0] + jolts + [jolts[-1] + 3])
+    return chains_from(0, [0] + jolts + [jolts[-1] + 3])
 
 
 if __name__ == "__main__":
