@@ -30,7 +30,7 @@ def solve_part_2_slowly(buses):
     i, x = 1, equations[0][1]
     for r, n in equations[1:]:
         while x % n != n - r:
-            x += reduce(mul, [a[1] for a in equations[:i]])
+            x += reduce(mul, map(itemgetter(1), equations[:i]))
         i+=1
     return x
 
