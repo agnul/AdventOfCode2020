@@ -31,7 +31,7 @@ def solve_part_2(program):
         p = patch(program, possible_fixes.pop())
         ip, acc = run(p)
 
-    return acc if ip >= len(p) else -1
+    return acc if ip >= len(program) else -1
 
 
 if __name__ == "__main__":
