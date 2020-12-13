@@ -4,6 +4,18 @@ from itertools import count
 from math import gcd, prod
 from operator import mul, itemgetter
 
+# no pow(a, -1, b) until 3.8
+def inv(a, b):
+    b0, x0, x1= b, 0, 1
+    if b == 1: return 1
+    while a > 1:
+        q = a // b
+        a, b = b, a % b
+        x0, x1 = x1 - q * x0, x0
+    if x1 < 0 : x1 += b0
+    return x1
+
+
 def solve_part_1(departure, buses):
     wait_times = [b - departure % b for _, b in buses]
     idx, min_wait = 0, wait_times[0]
@@ -23,6 +35,17 @@ def solve_part_2_slowly(buses):
     return x
 
 
+def solve_part_2_for_gurus(equations):
+    print(equations)
+    P = reduce(mul, map(itemgetter(1), equations))
+    t = 0
+    for ai, pi in equations:
+        ni = P // pi
+        yi = inv(ni, pi)
+        t = (t + (pi - ai) * ni * yi) % P
+    return t
+
+
 def solve_part_2(buses):
     n, step = 0, buses[0][1]
     for d, t in buses[1:]:
@@ -34,9 +57,9 @@ def solve_part_2(buses):
 
 
 if __name__ == "__main__":
-    lines = open('test.txt').readlines()
+    lines = open('input.txt').readlines()
     departure, buses = int(lines[0]), []
-    #for i, b in enumerate('67,x,7,59,61'.split(',')):
+    # for i, b in enumerate('67,x,7,59,61'.split(',')):
     for i, b in enumerate(lines[1].split(',')):
         if b != 'x': buses.append((i, int(b)))
-    print(f'{solve_part_1(departure, buses)}, {solve_part_2(buses)}')
+    print(f'{solve_part_1(departure, buses)}, {solve_part_2_for_gurus(buses)}')
