@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from functools import reduce
 from itertools import count
-from math import gcd, prod
+from math import gcd
 from operator import mul, itemgetter
 
 # no pow(a, -1, b) until 3.8
