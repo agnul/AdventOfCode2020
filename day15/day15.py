@@ -8,7 +8,7 @@ def play(numbers, rounds):
     for i, n in enumerate(numbers):
         said_at[i + 1] = n
         last_spoken_at[n].appendleft(i + 1)
-    for t in range(len(numbers) + 1, 2020 + 1):
+    for t in range(len(numbers) + 1, rounds + 1):
         prev, say = said_at[t - 1], 0
         if len(last_spoken_at[prev]) == 2:
             say = reduce(sub, last_spoken_at[prev])
@@ -22,7 +22,7 @@ def solve_part_1(numbers):
 
 
 def solve_part_2(numbers):
-    pass
+    return play(numbers, 30000000)
 
 
 if __name__ == "__main__":
