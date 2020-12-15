@@ -61,5 +61,5 @@ def solve_part_2(program):
 
 
 if __name__ == "__main__":
-    program = [parse(line.rstrip()) for line in open('test.txt').readlines()]
+    program = [parse(line.rstrip()) for line in open('input.txt').readlines()]
     print(f'{solve_part_1(program)}, {solve_part_2(program)}')
