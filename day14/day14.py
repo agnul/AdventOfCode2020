@@ -24,6 +24,22 @@ def poke(addr, val):
     memory[addr] = int(bin_str, 2)
 
 
+def all_addresses(addr):
+    float_count, bin_addr = 0, '{:036b}'.format(addr)
+    for i in range(36):
+        if i not in mask:
+            bin_addr = bin_addr[:i] + 'X' + bin_addr[i+1:]
+            float_count += 1
+        elif mask[i] == '1':
+            bin_addr = bin_addr[:i] + '1' + bin_addr[i+1:]
+    for n in range(2 ** float_count):
+        bits = '{:b}'.format(n).rjust(float_count, '0')
+        new_addr = bin_addr
+        for b in bits:
+            new_addr = new_addr.replace('X', b, 1)
+        yield int(new_addr, 2)
+
+
 def solve_part_1(program):
     for op, *args in program:
         if op == 'mask':
@@ -34,7 +50,14 @@ def solve_part_1(program):
 
 
 def solve_part_2(program):
-    pass
+    memory.clear()
+    for op, *args in program:
+        if op == 'mask':
+            set_mask(*args)
+        else:
+            for a in all_addresses(args[0]):
+                memory[a] = args[1]
+    return sum(v for v in memory.values() if v != 0)
 
 
 if __name__ == "__main__":
