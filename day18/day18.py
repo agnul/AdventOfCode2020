@@ -5,15 +5,13 @@
 # Val := n | '(' Expr ')'
 def Op(line, i):
     ii, v1 = Val(line, i, Op)
-    while ii < len(line):
+    while ii < len(line) and line[ii] in ('+', '*'):
         if line[ii] == '+':
             ii, v2 = Val(line, ii + 1, Op)
             v1 += v2
         elif line[ii] == '*':
             ii, v2 = Val(line, ii + 1, Op)
             v1 *= v2
-        else:
-            return ii, v1
     return ii, v1 
 
 # Expr := Prod 
@@ -22,12 +20,10 @@ def Op(line, i):
 # Val := n | '(' Expr ')' 
 def Prod(line, i = 0):
     ii, v1 = Sum(line, i)
-    while ii < len(line):
+    while ii < len(line) and line[ii] == '*':
         if line[ii] == '*':
             ii, v2 = Sum(line, ii + 1)
             v1 *= v2
-        else:
-            break
     return ii, v1
     
 
