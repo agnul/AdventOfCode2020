@@ -29,12 +29,10 @@ def Prod(line, i = 0):
 
 def Sum(line, i = 0):
     ii, v1 = Val(line, i, Prod)
-    while ii < len(line):
+    while ii < len(line) and line[ii] == '+':
         if line[ii] == '+':
             ii, v2 = Val(line, ii + 1, Prod)
             v1 += v2
-        else:
-            break
     return ii, v1
 
 
@@ -48,7 +46,7 @@ def Val(line, i, Expr):
 
 
 def expect(line, i, val, sym):
-    if i >= len(line) or line[i] != sym:
+    if not (i < len(line) and line[i] == sym):
         raise Exception(f'Invalid expression {line}, unbalanced PAREN error at pos {i}')
     else:
         return i + 1, val
