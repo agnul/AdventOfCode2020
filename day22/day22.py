@@ -20,18 +20,21 @@ def play(deck_a, deck_b):
     return ('A', deck_a) if len(deck_a) else ('B', deck_b)
 
 
-def play_rec(deck_a, deck_b):
+def play_rec(deck_a, deck_b, is_subgame=False):
+    if is_subgame and max(deck_a) > max(deck_b):
+        return ('A', deck_a)
+        
     seen = set()
     while len(deck_a) and len(deck_b):
         if tuple(deck_a) in seen:
             return ('A', deck_a)
-        else:
-            seen.add(tuple(deck_a))
+
+        seen.add(tuple(deck_a))
 
         a, *deck_a = deck_a
         b, *deck_b = deck_b
         if a <= len(deck_a) and b <= len(deck_b):
-            w, _ = play_rec(deck_a[:a], deck_b[:b])
+            w, _ = play_rec(deck_a[:a], deck_b[:b], True)
         else:
             w = 'A' if a > b else 'B'
 
