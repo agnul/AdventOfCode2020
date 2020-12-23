@@ -7,16 +7,10 @@ def parse(infile):
     return deck_a, deck_b
 
 
-def hash(deck_a, deck_b):
-    a = ','.join(map(str, deck_a))
-    b = ','.join(map(str, deck_b))
-    return f'{a}|{b}'
-
-
 def play(deck_a, deck_b):
     while len(deck_a) and len(deck_b):
-        a, deck_a = deck_a[0], deck_a[1:]
-        b, deck_b = deck_b[0], deck_b[1:]
+        a, *deck_a = deck_a
+        b, *deck_b = deck_b
         if a > b:
             deck_a.append(a)
             deck_a.append(b)
@@ -29,13 +23,13 @@ def play(deck_a, deck_b):
 def play_rec(deck_a, deck_b):
     seen = set()
     while len(deck_a) and len(deck_b):
-        if hash(deck_a, deck_b) in seen:
+        if tuple(deck_a) in seen:
             return ('A', deck_a)
         else:
-            seen.add(hash(deck_a, deck_b))
+            seen.add(tuple(deck_a))
 
-        a, deck_a = deck_a[0], deck_a[1:]
-        b, deck_b = deck_b[0], deck_b[1:]
+        a, *deck_a = deck_a
+        b, *deck_b = deck_b
         if a <= len(deck_a) and b <= len(deck_b):
             w, _ = play_rec(deck_a[:a], deck_b[:b])
         else:
