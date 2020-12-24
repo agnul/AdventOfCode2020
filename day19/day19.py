@@ -8,31 +8,25 @@ def parse_rule(s):
 
 
 def parse(fname):
-    rules, messages = defaultdict(lambda: []), []
+    rules, messages = dict(), []
     for ll in map(str.rstrip, open(fname).readlines()):
-        if ':' in ll:
-            left, right = ll.split(':')
-            rule = int(left)
-            for s in right.split('|'):
-                rules[rule].append([parse_rule(n) for n in s.split()])
+        if ': ' in ll:
+            left, right = ll.replace('"', '').split(': ')
+            rules[left] = right
         elif ll:
             messages.append(ll)
     return rules, messages
 
 
-def build_rule(rules, r, part_2 = False):
-    if isinstance(r, list) and isinstance(r[0], list) and len(r) > 1:
-        return f'({"|".join(build_rule(rules, s) for s in r)})'
-    elif isinstance(r, list):
-        return f'{"".join(build_rule(rules, s) for s in r)}'
-    elif isinstance(r, int):
-        return build_rule(rules, rules[r])
-    else:
+def expand(rules, r):
+    if not r.isdigit():
         return r
+    x = ''.join(map(lambda rr: expand(rules, rr), rules[r].split()))
+    return f'(?:{x})'
 
 
 def solve_part_1(rules, messages):
-    rx = build_rule(rules, rules[0])
+    rx = expand(rules, '0')
     count = 0
     for m in messages:
         if re.fullmatch(rx, m):
